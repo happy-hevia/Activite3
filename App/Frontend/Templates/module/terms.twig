@@ -1,5 +1,11 @@
 {% extends 'base.twig' %}
 
+{% block menuPrincipal %}
+    <li ><a href="/" >Accueil</a ></li >
+    <li ><a href="/a-propos" >À Propos</a ></li >
+    <li class="active"><a href="/terms" >Mentions</a ></li >
+{% endblock %}
+
 {% block content %}
 <div class="terms" >
     <div class="container" >

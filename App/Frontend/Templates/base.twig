@@ -14,11 +14,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Blog, livre, voyage, aventure, Billet simple pour l'Alaska, solitude" />
     <script type="application/x-javascript" > addEventListener("load", function () {
-        setTimeout(hideURLbar, 0);
-    }, false);
-    function hideURLbar() {
-        window.scrollTo(0, 1);
-    } </script >
+            setTimeout(hideURLbar, 0);
+        }, false);
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        } </script >
     <!----webfonts---->
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css' >
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,300italic,400italic,600italic' rel='stylesheet' type='text/css' >
@@ -52,9 +52,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="top-menu" >
                 <span class="menu" > </span >
                 <ul >
-                    <li class="active" ><a href="index.html" >Accueil</a ></li >
-                    <li ><a href="contact.html" >À Propos</a ></li >
-                    <li ><a href="terms.html" >Mentions</a ></li >
+                    {% block menuPrincipal %}
+                        <li ><a href="/" >Accueil</a ></li >
+                        <li ><a href="/a-propos" >À Propos</a ></li >
+                        <li ><a href="/terms" >Mentions</a ></li >
+                    {% endblock %}
                     <div class="clearfix" ></div >
                 </ul >
             </div >
@@ -75,8 +77,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div >
         <div class="banner-links" >
             <ul >
-                <li class="active" ><a href="#" >Le livre</a ></li >
-                <li ><a href="/" >L'histoire</a ></li >
+                {% block menuSecondaire %}
+                    <li ><a href="/" >Le livre</a ></li >
+                    <li ><a href="/histoire" >L'histoire</a ></li >
+                {% endblock %}
                 <div class="clearfix" ></div >
             </ul >
         </div >
@@ -89,30 +93,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 {% endblock %}
 
 
-
-
-    <!---fotter/-->
-    <div class="copywrite" >
-        <div class="container" >
-            <p >Copyrights &copy; 2017 Reading Time : Tous droits réservés | Design de
-                <a href="http://w3layouts.com/" >W3layouts</a ></p >
-        </div >
+<!---fotter/-->
+<div class="copywrite" >
+    <div class="container" >
+        <p >Copyrights &copy; 2017 Reading Time : Tous droits réservés | Design de
+            <a href="http://w3layouts.com/" >W3layouts</a > - <a href="/admin" >Administration</a ></p >
     </div >
-    <!---->
-    <script type="text/javascript" >
-        $(document).ready(function () {
-            /*
-             var defaults = {
-             containerID: 'toTop', // fading element id
-             containerHoverID: 'toTopHover', // fading element hover id
-             scrollSpeed: 1200,
-             easingType: 'linear'
-             };
-             */
-            $().UItoTop({easingType: 'easeOutQuart'});
-        });
-    </script >
-    <a href="#to-top" id="toTop" style="display: block;" > <span id="toTopHover" style="opacity: 1;" > </span ></a >
+</div >
+<!---->
+<script type="text/javascript" >
+    $(document).ready(function () {
+        /*
+         var defaults = {
+         containerID: 'toTop', // fading element id
+         containerHoverID: 'toTopHover', // fading element hover id
+         scrollSpeed: 1200,
+         easingType: 'linear'
+         };
+         */
+        $().UItoTop({easingType: 'easeOutQuart'});
+    });
+</script >
+<a href="#to-top" id="toTop" style="display: block;" > <span id="toTopHover" style="opacity: 1;" > </span ></a >
 
 
 </body >
