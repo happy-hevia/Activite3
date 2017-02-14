@@ -1,0 +1,34 @@
+{% extends '@admin/layout.twig' %}
+
+{% block contenu %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <!-- top tiles -->
+    <div class="row tile_count">
+        <div class="col-sm-4 col-xs-12 text-center tile_stats_count">
+            <span class="count_top "><i class="fa fa-user"></i> Articles</span>
+            <div class="count">{{ nbreArticles }}</div>
+        </div>
+        <div class="col-sm-4 col-xs-12 text-center tile_stats_count">
+            <span class="count_top "><i class="fa fa-clock-o"></i> Commentaires</span>
+            <div class="count">{{ nbreComments }}</div>
+        </div>
+        <div class="col-sm-4 col-xs-12 text-center tile_stats_count">
+            <span class="count_top "><i class="fa fa-user"></i> Commentaires notifiés</span>
+            <div class="count red">{{ nbreNotifie }}</div>
+        </div>
+    </div>
+    <!-- /top tiles -->
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="jumbotron">
+                <h1 class="text-center" >Bienvenue sur votre panneau d'administration</h1 ></div>
+        </div>
+
+    </div>
+    <br />
+
+</div>
+<!-- /page content -->
+{% endblock contenu %}

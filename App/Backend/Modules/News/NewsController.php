@@ -11,6 +11,36 @@ use \OCFram\FormHandler;
 
 class NewsController extends BackController
 {
+
+  public function executeArticlesListe(HTTPRequest $request)
+  {
+
+    $listeArticles = $this->managers->getManagerOf('News')->getList();
+
+    $this->page = $this->twig->render('@admin/modules/articles-liste.twig', array('listeArticles' => $listeArticles));
+  }
+
+  public function executeArticlesModifier(HTTPRequest $request)
+  {
+    $this->page = $this->twig->render('@admin/modules/articles-modifier.twig');
+  }
+
+  public function executeArticlesAjouter(HTTPRequest $request)
+  {
+    $this->page = $this->twig->render('@admin/modules/articles-ajouter.twig');
+  }
+
+  public function executeCommentairesListe(HTTPRequest $request)
+  {
+    $this->page = $this->twig->render('@admin/modules/commentaires-liste.twig');
+  }
+
+  public function executeCommentairesModifier(HTTPRequest $request)
+  {
+    $this->page = $this->twig->render('@admin/modules/commentaires-modifier.twig');
+  }
+
+
   public function executeDelete(HTTPRequest $request)
   {
     $newsId = $request->getData('id');
@@ -34,12 +64,15 @@ class NewsController extends BackController
 
   public function executeIndex(HTTPRequest $request)
   {
-    $this->page->addVar('title', 'Gestion des news');
 
-    $manager = $this->managers->getManagerOf('News');
+    $managerNews = $this->managers->getManagerOf('News');
+    $nbreArticles = $managerNews->count();
 
-    $this->page->addVar('listeNews', $manager->getList());
-    $this->page->addVar('nombreNews', $manager->count());
+    $managerComments = $this->managers->getManagerOf('Comments');
+    $nbreComments = $managerComments->count();
+    $nbreNotifie = $managerComments->countNotifie();
+
+    $this->page = $this->twig->render('@admin/modules/index.twig', array('nbreArticles' => $nbreArticles, 'nbreComments' => $nbreComments, 'nbreNotifie' => $nbreNotifie));
   }
 
   public function executeInsert(HTTPRequest $request)

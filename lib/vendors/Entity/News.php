@@ -9,7 +9,8 @@ class News extends Entity
             $titre,
             $contenu,
             $dateAjout,
-            $dateModif;
+            $dateModif,
+            $publicated;
 
   const AUTEUR_INVALIDE = 1;
   const TITRE_INVALIDE = 2;
@@ -63,6 +64,11 @@ class News extends Entity
     $this->dateModif = $dateModif;
   }
 
+  public function setPublicated($publicated)
+  {
+    $this->publicated = $publicated;
+  }
+
   // GETTERS //
 
   public function auteur()
@@ -88,5 +94,9 @@ class News extends Entity
   public function dateModif()
   {
     return $this->dateModif;
+  }
+  public function publicated()
+  {
+    return $this->publicated;
   }
 }

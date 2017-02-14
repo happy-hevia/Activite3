@@ -8,8 +8,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html >
 <head >
     <title >Reading Time | Blog : Billet simple pour l'Alaska</title >
-    <link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <link href="/css/style.css" rel='stylesheet' type='text/css' />
+    <link href="{{ link('front/css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
+    <link href="{{ link('front/css/style.css') }}" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1" >
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Blog, livre, voyage, aventure, Billet simple pour l'Alaska, solitude" />
@@ -26,8 +26,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script >
     <!--end slider -->
     <!--script-->
-    <script type="text/javascript" src="js/move-top.js" ></script >
-    <script type="text/javascript" src="js/easing.js" ></script >
+    <script type="text/javascript" src="{{ link('front/js/move-top.js') }}" ></script >
+    <script type="text/javascript" src="{{ link('front/js/easing.js') }}" ></script >
     <!--/script-->
     <script type="text/javascript" >
         jQuery(document).ready(function ($) {
@@ -46,7 +46,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="header" >
         <div class="container" >
             <div class="logo" >
-                <a href="/" > <img src="images/logo2.png" title="logo reading time" width="222" /></a >
+                <a href="/" > <img src="{{ link('front/images/logo2.png') }}" title="logo reading time" width="222" /></a >
             </div >
             <!---start-top-nav---->
             <div class="top-menu" >
@@ -78,44 +78,45 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="banner-links" >
             <ul >
                 {% block menuSecondaire %}
-                    <li ><a href="/" >Le livre</a ></li >
-                    <li ><a href="/histoire" >L'histoire</a ></li >
-                {% endblock %}
-                <div class="clearfix" ></div >
-            </ul >
+                    <li ><a href="
+    /" >Le livre</a ></li >
+    <li ><a href="/histoire" >L'histoire</a ></li >
+    {% endblock %}
+    <div class="clearfix" ></div >
+    </ul >
+    </div >
+    </div >
+    </div >
+    <!---//End-banner---->
+
+    {% block content %}
+
+    {% endblock %}
+
+
+    <!---fotter/-->
+    <div class="copywrite" >
+        <div class="container" >
+            <p >Copyrights &copy; 2017 Reading Time : Tous droits réservés | Design de
+                <a href="http://w3layouts.com/" >W3layouts</a > - <a href="/admin" >Administration</a ></p >
         </div >
     </div >
-</div >
-<!---//End-banner---->
-
-{% block content %}
-
-{% endblock %}
-
-
-<!---fotter/-->
-<div class="copywrite" >
-    <div class="container" >
-        <p >Copyrights &copy; 2017 Reading Time : Tous droits réservés | Design de
-            <a href="http://w3layouts.com/" >W3layouts</a > - <a href="/admin" >Administration</a ></p >
-    </div >
-</div >
-<!---->
-<script type="text/javascript" >
-    $(document).ready(function () {
-        /*
-         var defaults = {
-         containerID: 'toTop', // fading element id
-         containerHoverID: 'toTopHover', // fading element hover id
-         scrollSpeed: 1200,
-         easingType: 'linear'
-         };
-         */
-        $().UItoTop({easingType: 'easeOutQuart'});
-    });
-</script >
-<a href="#to-top" id="toTop" style="display: block;" > <span id="toTopHover" style="opacity: 1;" > </span ></a >
+    <!---->
+    <script type="text/javascript" >
+        $(document).ready(function () {
+            /*
+             var defaults = {
+             containerID: 'toTop', // fading element id
+             containerHoverID: 'toTopHover', // fading element hover id
+             scrollSpeed: 1200,
+             easingType: 'linear'
+             };
+             */
+            $().UItoTop({easingType: 'easeOutQuart'});
+        });
+    </script >
+    <a href="#to-top" id="toTop" style="display: block;" > <span id="toTopHover" style="opacity: 1;" > </span ></a >
 
 
-</body >
+    </body >
 </html >

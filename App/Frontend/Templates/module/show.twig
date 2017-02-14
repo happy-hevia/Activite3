@@ -31,7 +31,7 @@
 
                             {% for comment in comments %}
                                 <div class="comment-grid comment-grid-1">
-                                    <img src="images/pic.png" alt="image_profil"/>
+                                    <img src="{{ link('front/images/pic.png') }}" alt="image_profil"/>
                                     <div class="comment-info">
                                         <h4>{{ comment.auteur }}</h4>
                                         <p>{{ comment.contenu }}</p>

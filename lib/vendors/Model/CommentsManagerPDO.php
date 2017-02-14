@@ -5,6 +5,17 @@ use \Entity\Comment;
 
 class CommentsManagerPDO extends CommentsManager
 {
+
+  public function count()
+  {
+    return $this->dao->query('SELECT COUNT(*) FROM comments')->fetchColumn();
+  }
+
+  public function countNotifie()
+  {
+    return $this->dao->query('SELECT COUNT(*) FROM comments WHERE notifie = 1')->fetchColumn();
+  }
+
   protected function add(Comment $comment)
   {
     $q = $this->dao->prepare('INSERT INTO comments SET news = :news, auteur = :auteur, contenu = :contenu, date = NOW()');

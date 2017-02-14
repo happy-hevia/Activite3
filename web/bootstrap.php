@@ -34,13 +34,6 @@ $formBuilderLoader->register();
 $twigLoader = new SplClassLoader('twig', __DIR__.'/../lib/twig/twig/lib/Twig/Loader');
 $twigLoader->register();
 
-$loader = new Twig_Loader_Filesystem(__DIR__.'/../App/Frontend/Templates');
-$twig = new Twig_Environment($loader, array(
-    'cache' => __DIR__.'/../cache', 'debug' => true,
-
-));
-
-
 // Il ne nous suffit plus qu'à déduire le nom de la classe et de l'instancier
 $appClass = 'App\\'.$_GET['app'].'\\'.$_GET['app'].'Application';
 

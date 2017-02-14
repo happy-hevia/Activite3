@@ -8,6 +8,7 @@ use OCFram\Page;
 use OCFram\PDOFactory;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+use Twig_SimpleFunction;
 
 abstract class BackController extends ApplicationComponent
 {
@@ -27,10 +28,16 @@ abstract class BackController extends ApplicationComponent
 
 
     $loader = new Twig_Loader_Filesystem(__DIR__.'/../../App/Frontend/Templates');
+    $loader->addPath(__DIR__ . '/../../App/Backend/Templates', 'admin');
     $this->twig = new Twig_Environment($loader, array(
         'cache' => __DIR__.'/../../cache', 'debug' => true,
     ));
 
+//    ajout d'un générateur de lien
+    $function = new Twig_SimpleFunction('link', function ($path) {
+      return 'http://'.$_SERVER['SERVER_NAME'] . '/' . $path;
+    });
+    $this->twig->addFunction($function);
 
     $this->setModule($module);
     $this->setAction($action);
