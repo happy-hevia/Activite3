@@ -16,6 +16,24 @@ class CommentsManagerPDO extends CommentsManager
     return $this->dao->query('SELECT COUNT(*) FROM comments WHERE notifie = 1')->fetchColumn();
   }
 
+  public function getAll()
+  {
+
+    $q = $this->dao->prepare('SELECT * FROM comments');
+    $q->execute();
+
+    $q->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Comment');
+
+    $comments = $q->fetchAll();
+
+    foreach ($comments as $comment)
+    {
+      $comment->setDate(new \DateTime($comment->date()));
+    }
+
+    return $comments;
+  }
+
   protected function add(Comment $comment)
   {
     $q = $this->dao->prepare('INSERT INTO comments SET news = :news, auteur = :auteur, contenu = :contenu, date = NOW()');

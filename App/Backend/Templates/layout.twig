@@ -13,8 +13,8 @@
     <link href="{{ link('back/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ link('back/css/font-awesome.min.css') }}" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="{{ link('back/css/green.css') }}" rel="stylesheet">
+    {#<!-- iCheck -->#}
+    {#<link href="{{ link('back/css/green.css') }}" rel="stylesheet">#}
 
     {% block stylesheets %}
     {% endblock %}
@@ -61,14 +61,9 @@
                                 <ul class="nav child_menu">
                                     <li><a href="{{ link('admin/articles/liste') }}">Liste</a></li>
                                     <li><a href="{{ link('admin/articles/ajouter') }}">Ajouter</a></li>
-                                    <li><a href="{{ link('admin/articles/modifier-1') }}">Modifier</a></li>
                                 </ul>
                             </li>
-                            <li><a ><i class="fa fa-comment"></i> Commentaires <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li><a href="{{ link('admin/commentaires/liste') }}">Liste</a></li>
-                                    <li><a href="{{ link('admin/commentaires/modifier-1') }}">Modifier</a></li>
-                                </ul>
+                            <li><a href="{{ link('admin/commentaires/liste') }}" ><i class="fa fa-comment"></i> Commentaires </a>
                             </li>
                         </ul>
                     </div>
@@ -122,18 +117,19 @@
 <script src="{{ link('back/js/jquery.min.js') }}"></script>
 <!-- Bootstrap -->
 <script src="{{ link('back/js//bootstrap.min.js') }}"></script>
-<!-- iCheck -->
-<script src="{{ link('back/js//icheck.min.js') }}"></script>
+{#<!-- iCheck -->#}
+{#<script src="{{ link('back/js//icheck.min.js') }}"></script>#}
 
 <!-- tiny mce -->
-<script src="//cloud.tinymce.com/stable/tinymce.min.js" ></script >
-<script >tinymce.init({selector: 'textarea'});</script >
+<script src="http://cloud.tinymce.com/stable/tinymce.min.js?apiKey=fuu6pi7w5hnbqfip0do318rn3olotmsw5ye3g4mi5vt0eh1n"></script>
+<script >tinymce.init({selector: 'textarea',
+                       language_url : '{{ link('back/js/fr_FR.js') }}'});</script >
 
 {% block javascripts %}
 {% endblock %}
 
-<!-- Custom Theme Scripts -->
-<script src="{{ link('back/js//custom.min.js') }}"></script>
+{#<!-- Custom Theme Scripts -->#}
+{#<script src="{{ link('back/js//custom.min.js') }}"></script>#}
 
 
 

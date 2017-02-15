@@ -66,7 +66,8 @@ class News extends Entity
 
   public function setPublicated($publicated)
   {
-    $this->publicated = $publicated;
+
+    $this->publicated = boolval($publicated);
   }
 
   // GETTERS //

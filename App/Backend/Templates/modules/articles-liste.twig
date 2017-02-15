@@ -54,9 +54,7 @@
                                         <td >{{ article.auteur }}</td >
                                         <td >{{ article.dateCreation|date('d/m/y m:h') }}</td >
                                         <td >
-                                            <form >
-                                                <a href="article-modifier.php" class="btn btn-sm btn-primary" >Modifier</a >
-                                            </form >
+                                            <a href="{{ link('admin/articles/modifier-' ~ article.id) }}" class="btn btn-sm btn-primary" >Modifier</a >
                                             <form class="form-supprimer" action="/publier" method="post" >
                                                 <button type="submit" data-toggle="modal" data-target="#confirm-submit" class="btn btn-sm btn-success bouton-supprimer" >{% if article.publicated == 0 %}Publier{% else %}Dépublier{% endif %}</button >
                                             </form >

@@ -29,7 +29,7 @@
                                 </div >
                                 <div class="content-grid-info" >
                                     <h3 ><a href="/news-{{ news.id }}" >{{ news.titre }}</a ></h3 >
-                                    <p >{{ news.contenu }}</p >
+                                    <p >{{ news.contenu|raw }}</p >
                                     <a class="bttn" href="/news-{{ news.id }}" >Voir Plus</a >
                                 </div >
                             </div >

@@ -49,24 +49,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr role="row" class="odd" >
-                                <td tabindex="0" class="sorting_1" > 1</td >
-                                <td>Nixon</td>
-                                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta distinctio dolor, eum harum impedit laudantium minima nisi numquam odit officia praesentium quas qui quia sunt ullam voluptate voluptatem? Ad animi asperiores autem, consequuntur dolorum error incidunt laborum modi mollitia officiis placeat porro quae, quaerat quas qui quibusdam saepe sint sunt! Ad architecto aut deleniti dolorem, expedita magni quibusdam vero? Ad architecto aspernatur autem consectetur, culpa cum dignissimos dolore dolorem dolorum eaque error esse eum ex explicabo facere fugit illum in labore magnam modi molestias mollitia nesciunt nobis odit pariatur perspiciatis quasi quisquam repellendus rerum temporibus totam ut voluptatibus.</td>
-                                <td>Nom de l'article</td>
-                                <td>16/08/17 - 18h44</td>
-                                <td><button class="btn btn-sm btn-primary">Modifier</button><button class="btn btn-sm btn-danger">Supprimer</button></td>
-                                <td><span class="fa fa-check green"></span></td>
+                            {% for commentaire in listeCommentaires %}
+                            <tr role="row" class="{% if loop.inder % 2 == 1 %}odd{% else %}even{% endif %}" >
+                                <td tabindex="0" class="sorting_1" > {{ commentaire.id }}</td >
+                                <td>{{ commentaire.auteur }}</td>
+                                <td>{{ commentaire.contenu }}</td>
+                                <td>{{ commentaire.news }}</td>
+                                <td>{{ commentaire.date|date('d/m/y - h:m') }}</td>
+                                <td><a href="{{ link('admin/commentaires/modifier-' ~ commentaire.id) }}" class="btn btn-sm btn-primary">Modifier</a><button class="btn btn-sm btn-danger">Supprimer</button></td>
+                                <td><span class="fa {% if commentaire.notifie == 1 %}fa-bell red{% else %}fa-check green{% endif %}"></span></td>
                             </tr>
-                            <tr role="row" class="even" >
-                                <td tabindex="0" class="sorting_1" > 2</td >
-                                <td>Bartien</td>
-                                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dicta distinctio dolor, eum harum impedit laudantium minima nisi numquam odit officia praesentium quas qui quia sunt ullam voluptate voluptatem? Ad animi asperiores autem, consequuntur dolorum error incidunt laborum modi mollitia officiis placeat porro quae, quaerat quas qui quibusdam saepe sint sunt! Ad architecto aut deleniti dolorem, expedita magni quibusdam vero? Ad architecto aspernatur autem consectetur, culpa cum dignissimos dolore dolorem dolorum eaque error esse eum ex explicabo facere fugit illum in labore magnam modi molestias mollitia nesciunt nobis odit pariatur perspiciatis quasi quisquam repellendus rerum temporibus totam ut voluptatibus.</td>
-                                <td>Nom de l'article</td>
-                                <td>16/08/17 - 18h44</td>
-                                <td><button class="btn btn-sm btn-primary">Modifier</button><button class="btn btn-sm btn-danger">Supprimer</button></td>
-                                <td><span class="fa fa-bell red"></span></td>
-                            </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
 

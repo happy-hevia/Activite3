@@ -31,7 +31,7 @@
                                     <span class="required" >*</span >
                                 </label >
                                 <div class="col-xs-12" >
-                                    <input type="text" id="nom" required="required" class="form-control" value="Nom de l'article" disabled >
+                                    <input type="text" id="nom" required="required" class="form-control" value="{{ commentaire.news }}" disabled >
                                 </div >
                             </div >
                             <div class="form-group" >
@@ -39,7 +39,7 @@
                                     <span class="required" >*</span >
                                 </label >
                                 <div class="col-xs-12" >
-                                    <input type="text" id="nom" required="required" class="form-control" value="aucun" disabled >
+                                    <input type="text" id="nom" required="required" class="form-control" value="{{ commentaire.responseTo }}" disabled >
                                 </div >
                             </div >
                             <div class="form-group" >
@@ -47,7 +47,7 @@
                                     <span class="required" >*</span >
                                 </label >
                                 <div class="col-xs-12" >
-                                    <input type="text" id="nom" required="required" class="form-control" value="Auteur du commentaire" >
+                                    <input type="text" id="nom" required="required" class="form-control" value="{{ commentaire.auteur  }}" >
                                 </div >
                             </div >
                             <div class="form-group" >
@@ -55,7 +55,7 @@
                                     <span class="required" >*</span >
                                 </label >
                                 <div class="col-xs-12" >
-                                    <input type="text" id="contenu" required="required" class="form-control" value="Contenu du commentaire" />
+                                    <input type="text" id="contenu" required="required" class="form-control" value="{{ commentaire.contenu }}" />
                                 </div >
                             </div >
                             <div class="ln_solid" ></div >

@@ -69,4 +69,36 @@ class Comment extends Entity
   {
     return $this->date;
   }
+
+  /**
+   * @return mixed
+   */
+  public function getNotifie()
+  {
+    return $this->notifie;
+  }
+
+  /**
+   * @param mixed $notifie
+   */
+  public function setNotifie($notifie)
+  {
+    $this->notifie = $notifie;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getResponseTo()
+  {
+    return $this->responseTo;
+  }
+
+  /**
+   * @param mixed $responseTo
+   */
+  public function setResponseTo($responseTo)
+  {
+    $this->responseTo = $responseTo;
+  }
 }
