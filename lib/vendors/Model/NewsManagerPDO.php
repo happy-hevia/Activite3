@@ -22,6 +22,11 @@ class NewsManagerPDO extends NewsManager
     return $this->dao->query('SELECT COUNT(*) FROM news')->fetchColumn();
   }
 
+  public function countPublicated()
+  {
+    return $this->dao->query('SELECT COUNT(*) FROM news WHERE publicated = 1')->fetchColumn();
+  }
+
   public function delete($id)
   {
     $this->dao->exec('DELETE FROM news WHERE id = '.(int) $id);
@@ -52,9 +57,34 @@ class NewsManagerPDO extends NewsManager
     return $listeNews;
   }
   
+  public function getListPublicated($debut = -1, $limite = -1)
+  {
+    $sql = 'SELECT id, auteur, titre, contenu, dateAjout, dateModif, publicated FROM news WHERE publicated = 1 ORDER BY id DESC';
+
+    if ($debut != -1 || $limite != -1)
+    {
+      $sql .= ' LIMIT '.(int) $limite.' OFFSET '.(int) $debut;
+    }
+
+    $requete = $this->dao->query($sql);
+    $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\News');
+
+    $listeNews = $requete->fetchAll();
+
+    foreach ($listeNews as $news)
+    {
+      $news->setDateAjout(new \DateTime($news->dateAjout()));
+      $news->setDateModif(new \DateTime($news->dateModif()));
+    }
+
+    $requete->closeCursor();
+
+    return $listeNews;
+  }
+
   public function getUnique($id)
   {
-    $requete = $this->dao->prepare('SELECT id, auteur, titre, contenu, dateAjout, dateModif FROM news WHERE id = :id');
+    $requete = $this->dao->prepare('SELECT id, auteur, titre, contenu, dateAjout, dateModif, publicated FROM news WHERE id = :id');
     $requete->bindValue(':id', (int) $id, \PDO::PARAM_INT);
     $requete->execute();
     
@@ -71,13 +101,14 @@ class NewsManagerPDO extends NewsManager
     return null;
   }
 
-  protected function modify(News $news)
+  public function modify(News $news)
   {
-    $requete = $this->dao->prepare('UPDATE news SET auteur = :auteur, titre = :titre, contenu = :contenu, dateModif = NOW() WHERE id = :id');
+    $requete = $this->dao->prepare('UPDATE news SET auteur = :auteur, titre = :titre, contenu = :contenu, dateModif = NOW(), publicated = :publicated WHERE id = :id');
     
     $requete->bindValue(':titre', $news->titre());
     $requete->bindValue(':auteur', $news->auteur());
     $requete->bindValue(':contenu', $news->contenu());
+    $requete->bindValue(':publicated', $news->publicated());
     $requete->bindValue(':id', $news->id(), \PDO::PARAM_INT);
     
     $requete->execute();

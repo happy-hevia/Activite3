@@ -49,7 +49,7 @@
                     <div class="pages" >
                         <ul >
                             {% for i in 1..nbrePage %}
-                                {% if page == 1 %}
+                                {% if page == i %}
                                     <li class="active" ><a href="/page-{{ i }}" >{{ i }}</a ></li >
                                 {% else %}
                                     <li ><a href="/page-{{ i }}" >{{ i }}</a ></li >

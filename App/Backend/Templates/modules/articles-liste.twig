@@ -51,8 +51,8 @@
                                 {% for article in listeArticles %}
                                     <tr role="row" class="{% if loop.inder % 2 == 1 %}odd{% else %}even{% endif %}" >
                                         <td tabindex="0" class="sorting_1" >{{ article.id }}</td >
-                                        <td >{{ article.auteur }}</td >
-                                        <td >{{ article.dateCreation|date('d/m/y m:h') }}</td >
+                                        <td >{{ article.titre }}</td >
+                                        <td >{{ article.dateCreation|date('d/m/y à h:m') }}</td >
                                         <td >
                                             <a href="{{ link('admin/articles/modifier-' ~ article.id) }}" class="btn btn-sm btn-primary" >Modifier</a >
                                             <form class="form-supprimer" action="/publier" method="post" >

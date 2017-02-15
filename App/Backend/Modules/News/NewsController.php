@@ -23,31 +23,50 @@ class NewsController extends BackController
 
     public function executeArticlesModifier(HTTPRequest $request)
     {
-        $article = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+        $form = GestionFormulaire::creationFormulaireModificationArticle();
 
-        $this->page = $this->twig->render('@admin/modules/articles-modifier.twig', array('article' => $article));
+        $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+        $form->setData($news);
+
+        if ($form->posted() && !$form->check()) {
+            $article = $form->getData($news);
+            $article->setAuteur("Jean Forteroche");
+
+            $this->managers->getManagerOf('News')->modify($article);
+
+            $this->app->user()->setFlash("L'article a été modifié avec succès");
+            $this->app->httpResponse()->redirect('/admin/');
+
+        } else if ($form->posted() && $form->check()) {
+            $errors = $form->check();
+            $this->page = $this->twig->render('@admin/modules/articles-modifier.twig', array('form' => $form, 'errors' => $errors));
+        } else {
+            $this->page = $this->twig->render('@admin/modules/articles-modifier.twig', array('form' => $form));
+        }
     }
 
     public function executeArticlesAjouter(HTTPRequest $request)
     {
-        $news = new News();
         $form = GestionFormulaire::creationFormulaireAjoutArticle();
+
+        $news = new News();
         $form->setData($news);
 
-        $errors = array();
         if ($form->posted() && !$form->check()) {
             $article = $form->getData($news);
             $article->setAuteur("Jean Forteroche");
 
             $this->managers->getManagerOf('News')->add($article);
+
+            $this->app->user()->setFlash("L'article a été ajouté avec succès");
+            $this->app->httpResponse()->redirect('/admin/');
+
         } else if ($form->posted() && $form->check()) {
             $errors = $form->check();
+            $this->page = $this->twig->render('@admin/modules/articles-ajouter.twig', array('form' => $form, 'errors' => $errors));
+        } else {
+            $this->page = $this->twig->render('@admin/modules/articles-ajouter.twig', array('form' => $form));
         }
-
-
-
-
-        $this->page = $this->twig->render('@admin/modules/articles-ajouter.twig', array('form' => $form, 'errors' => $errors));
     }
 
     public function executeCommentairesListe(HTTPRequest $request)
@@ -97,7 +116,7 @@ class NewsController extends BackController
         $nbreComments = $managerComments->count();
         $nbreNotifie = $managerComments->countNotifie();
 
-        $this->page = $this->twig->render('@admin/modules/index.twig', array('nbreArticles' => $nbreArticles, 'nbreComments' => $nbreComments, 'nbreNotifie' => $nbreNotifie));
+        $this->page = $this->twig->render('@admin/modules/index.twig', array('nbreArticles' => $nbreArticles, 'nbreComments' => $nbreComments, 'nbreNotifie' => $nbreNotifie, 'flash' => $this->app()->user()->getFlash()));
     }
 
     public function executeInsert(HTTPRequest $request)

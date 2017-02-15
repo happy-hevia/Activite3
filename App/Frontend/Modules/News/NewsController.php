@@ -22,7 +22,7 @@ class NewsController extends BackController
 //    Je récupère la page
     $page = $request->getData('page') ? $request->getData('page') : 1;
 
-    $listeNews = $manager->getList($nombreNews * ($page - 1), $nombreNews);
+    $listeNews = $manager->getListPublicated($nombreNews * ($page - 1), $nombreNews);
 
     foreach ($listeNews as $news)
     {
@@ -36,7 +36,7 @@ class NewsController extends BackController
     }
 
 //    calcule le nombre total de page
-    $totalArticle = $manager->count();
+    $totalArticle = $manager->countPublicated();
     $nbrePage = round($totalArticle / $nombreNews);
 
 

@@ -3,6 +3,10 @@
 {% block contenu %}
 <!-- page content -->
 <div class="right_col" role="main">
+    {% if flash is defined and flash is not null %}
+        <div class="alert alert-success">{{ flash }}</div>
+    {% endif %}
+
     <!-- top tiles -->
     <div class="row tile_count">
         <div class="col-sm-4 col-xs-12 text-center tile_stats_count">

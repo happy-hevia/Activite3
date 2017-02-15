@@ -98,6 +98,6 @@ class News extends Entity
   }
   public function publicated()
   {
-    return $this->publicated;
+    return boolval($this->publicated);
   }
 }
