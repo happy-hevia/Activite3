@@ -33,4 +33,13 @@ class GestionFormulaire
         return $form;
     }
 
+    public static function creationFormulaireModificationCommentaire()
+    {
+        $form = new Form(__DIR__ . '/../Templates/modules/formulaire/form-modifier-commentaire.html');
+
+        $form->setLanguage(new French);
+
+        return $form;
+    }
+
 }

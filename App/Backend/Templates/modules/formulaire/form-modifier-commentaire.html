@@ -1,0 +1,41 @@
+<form id="form-modifier-commentaire" method="post" data-parsley-validate class="form-horizontal form-label-left" >
+    <div class="form-group" >
+        <label class="col-xs-12" for="news" >Article
+            <span class="required" >*</span >
+        </label >
+        <div class="col-xs-12" >
+            <input type="text" id="news" name="news" mapping="news" class="form-control" disabled >
+        </div >
+    </div >
+    <div class="form-group" >
+        <label class="col-xs-12" for="responseTo" >Réponse au commentaire
+            <span class="required" >*</span >
+        </label >
+        <div class="col-xs-12" >
+            <input type="text" id="responseTo" name="responseTo" mapping="responseTo" class="form-control" disabled >
+        </div >
+    </div >
+    <div class="form-group" >
+        <label class="col-xs-12" for="auteur" >Auteur
+            <span class="required" >*</span >
+        </label >
+        <div class="col-xs-12" >
+            <input type="text" id="auteur" name="auteur" mapping="auteur" required="required" class="form-control" >
+        </div >
+    </div >
+    <div class="form-group" >
+        <label class="col-xs-12" for="contenu" >Contenu
+            <span class="required" >*</span >
+        </label >
+        <div class="col-xs-12" >
+            <textarea  id="contenu" name="contenu" mapping="contenu" required="required" class="form-control" ></textarea>
+        </div >
+    </div >
+    <div class="ln_solid" ></div >
+    <div class="form-group" >
+        <div class="col-md-6 col-sm-6 col-xs-12" >
+            <button type="submit" class="btn btn-lg btn-success" >Modifier</button >
+            <button type="button" class="btn btn-lg btn-danger" >Supprimer</button >
+        </div >
+    </div >
+</form >

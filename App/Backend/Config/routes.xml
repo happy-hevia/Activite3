@@ -4,6 +4,8 @@
   <route url="/admin/articles/liste" module="News" action="articlesListe" />
   <route url="/admin/articles/ajouter" module="News" action="articlesAjouter" />
   <route url="/admin/articles/modifier-([0-9]+)" module="News" action="articlesModifier" vars="id"/>
+  <route url="/admin/articles/publier-([0-9]+)" module="News" action="articlePublier" vars="id"/>
+  <route url="/admin/articles/supprimer-([0-9]+)" module="News" action="articleSupprimer" vars="id"/>
   <route url="/admin/commentaires/liste" module="News" action="commentairesListe" />
   <route url="/admin/commentaires/modifier-([0-9]+)" module="News" action="commentairesModifier" vars="id"/>
   <route url="/admin/news-insert\.html" module="News" action="insert" />

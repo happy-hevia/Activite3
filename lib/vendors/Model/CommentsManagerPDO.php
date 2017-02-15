@@ -80,7 +80,7 @@ class CommentsManagerPDO extends CommentsManager
     return $comments;
   }
 
-  protected function modify(Comment $comment)
+  public function modify(Comment $comment)
   {
     $q = $this->dao->prepare('UPDATE comments SET auteur = :auteur, contenu = :contenu WHERE id = :id');
     

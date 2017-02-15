@@ -21,6 +21,22 @@ class NewsController extends BackController
         $this->page = $this->twig->render('@admin/modules/articles-liste.twig', array('listeArticles' => $listeArticles));
     }
 
+    public function executeArticlePublier(HTTPRequest $request)
+    {
+        $article = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+        $article->setPublicated(!$article->publicated());
+
+        $this->managers->getManagerOf('News')->modify($article);
+
+        if ($article->publicated()) {
+            $this->app->user()->setFlash("L'article est maintenant publié");
+        } else {
+            $this->app->user()->setFlash("L'article n'est maintenant plus publié");
+        }
+
+        $this->app->httpResponse()->redirect('/admin/');
+    }
+
     public function executeArticlesModifier(HTTPRequest $request)
     {
         $form = GestionFormulaire::creationFormulaireModificationArticle();
@@ -78,23 +94,40 @@ class NewsController extends BackController
 
     public function executeCommentairesModifier(HTTPRequest $request)
     {
+        $form = GestionFormulaire::creationFormulaireModificationCommentaire();
 
         $commentaire = $this->managers->getManagerOf('Comments')->get($request->getData('id'));
 
-        $this->page = $this->twig->render('@admin/modules/commentaires-modifier.twig', array('commentaire' => $commentaire));
+        $form->setData($commentaire);
+        $form->setValue('news', 1);
+
+        if ($form->posted() && !$form->check()) {
+            $commentaire = $form->getData($commentaire);
+
+            $this->managers->getManagerOf('Comments')->modify($commentaire);
+
+            $this->app->user()->setFlash("Le commenatire a été modifié avec succès");
+            $this->app->httpResponse()->redirect('/admin/');
+
+        } else if ($form->posted() && $form->check()) {
+            $errors = $form->check();
+            $this->page = $this->twig->render('@admin/modules/commentaires-modifier.twig', array('form' => $form, 'errors' => $errors));
+        } else {
+            $this->page = $this->twig->render('@admin/modules/commentaires-modifier.twig', array('form' => $form));
+        }
     }
 
 
-    public function executeDelete(HTTPRequest $request)
+    public function executeArticleSupprimer(HTTPRequest $request)
     {
         $newsId = $request->getData('id');
 
         $this->managers->getManagerOf('News')->delete($newsId);
         $this->managers->getManagerOf('Comments')->deleteFromNews($newsId);
 
-        $this->app->user()->setFlash('La news a bien été supprimée !');
+        $this->app->user()->setFlash("L'article a été supprimé avec succès");
 
-        $this->app->httpResponse()->redirect('.');
+        $this->app->httpResponse()->redirect('/admin/');
     }
 
     public function executeDeleteComment(HTTPRequest $request)
