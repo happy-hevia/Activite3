@@ -3,4 +3,8 @@
   <define var="login" value="admin" />
   <define var="pass" value="mdp" />
   <define var="auteur" value="Jean Forteroche" />
+  <define var="db-host" value="lilesophsdbillet.mysql.db" />
+  <define var="db-name" value="lilesophsdbillet" />
+  <define var="db-user" value="lilesophsdbillet" />
+  <define var="db-mdp" value="Toopa007" />
 </definitions>

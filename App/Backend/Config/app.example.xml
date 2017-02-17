@@ -3,4 +3,8 @@
   <define var="login" value="login" />
   <define var="pass" value="motdepasse" />
   <define var="auteur" value="nom de l'auteur" />
+  <define var="db-host" value="host" />
+  <define var="db-name" value="name" />
+  <define var="db-user" value="user" />
+  <define var="db-mdp" value="password" />
 </definitions>

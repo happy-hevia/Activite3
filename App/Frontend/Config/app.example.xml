@@ -2,4 +2,8 @@
 <definitions>
   <define var="nombre_news" value="5" />
   <define var="nombre_caracteres" value="400" />
+  <define var="db-host" value="host" />
+  <define var="db-name" value="name" />
+  <define var="db-user" value="user" />
+  <define var="db-mdp" value="password" />
 </definitions>

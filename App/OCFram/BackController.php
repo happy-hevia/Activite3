@@ -22,7 +22,13 @@ abstract class BackController extends ApplicationComponent
   {
     parent::__construct($app);
 
-    $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
+    $config = $this->app()->config();
+    $dbHost = $config->get('db-host');
+    $dbName = $config->get('db-name');
+    $dbUser = $config->get('db-user');
+    $dbMdp = $config->get('db-mdp');
+
+    $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion($dbHost, $dbName, $dbUser, $dbMdp));
 
 
     $loader = new Twig_Loader_Filesystem(__DIR__.'/../../App/Frontend/Templates');

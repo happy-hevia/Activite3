@@ -2,4 +2,8 @@
 <definitions>
   <define var="nombre_news" value="5" />
   <define var="nombre_caracteres" value="400" />
+  <define var="db-host" value="lilesophsdbillet.mysql.db" />
+  <define var="db-name" value="lilesophsdbillet" />
+  <define var="db-user" value="lilesophsdbillet" />
+  <define var="db-mdp" value="Toopa007" />
 </definitions>
