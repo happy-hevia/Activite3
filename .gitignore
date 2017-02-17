@@ -9,3 +9,5 @@ gen
 node_modules/
 blogname-web/
 gentelella/
+App/Backend/Config/app.xml
+App/Frontend/Config/app.xml

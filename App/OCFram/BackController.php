@@ -4,7 +4,6 @@ namespace OCFram;
 
 use OCFram\ApplicationComponent;
 use OCFram\Managers;
-use OCFram\Page;
 use OCFram\PDOFactory;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -24,7 +23,6 @@ abstract class BackController extends ApplicationComponent
     parent::__construct($app);
 
     $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
-    $this->page = new Page($app);
 
 
     $loader = new Twig_Loader_Filesystem(__DIR__.'/../../App/Frontend/Templates');
@@ -41,7 +39,6 @@ abstract class BackController extends ApplicationComponent
 
     $this->setModule($module);
     $this->setAction($action);
-    $this->setView($action);
   }
 
   public function execute()
@@ -81,15 +78,4 @@ abstract class BackController extends ApplicationComponent
     $this->action = $action;
   }
 
-  public function setView($view)
-  {
-    if (!is_string($view) || empty($view))
-    {
-      throw new \InvalidArgumentException('La vue doit être une chaine de caractères valide');
-    }
-
-    $this->view = $view;
-
-    $this->page->setContentFile(__DIR__.'/../../App/'.$this->app->name().'/Modules/'.$this->module.'/Views/'.$this->view.'.php');
-  }
 }

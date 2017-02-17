@@ -34,14 +34,15 @@ class CommentsManagerPDO extends CommentsManager
     return $comments;
   }
 
-  protected function add(Comment $comment)
+  public function add(Comment $comment)
   {
-    $q = $this->dao->prepare('INSERT INTO comments SET news = :news, auteur = :auteur, contenu = :contenu, date = NOW()');
+    $q = $this->dao->prepare('INSERT INTO comments SET news = :news, auteur = :auteur, contenu = :contenu, responseTo = :responseTo, date = NOW()');
     
     $q->bindValue(':news', $comment->news(), \PDO::PARAM_INT);
     $q->bindValue(':auteur', $comment->auteur());
     $q->bindValue(':contenu', $comment->contenu());
-    
+    $q->bindValue(':responseTo', $comment->responseTo());
+
     $q->execute();
     
     $comment->setId($this->dao->lastInsertId());
@@ -64,7 +65,7 @@ class CommentsManagerPDO extends CommentsManager
       throw new \InvalidArgumentException('L\'identifiant de la news passé doit être un nombre entier valide');
     }
     
-    $q = $this->dao->prepare('SELECT id, news, auteur, contenu, date FROM comments WHERE news = :news');
+    $q = $this->dao->prepare('SELECT id, news, auteur, contenu, responseTo, notifie, date FROM comments WHERE news = :news');
     $q->bindValue(':news', $news, \PDO::PARAM_INT);
     $q->execute();
     
@@ -72,20 +73,22 @@ class CommentsManagerPDO extends CommentsManager
     
     $comments = $q->fetchAll();
     
-    foreach ($comments as $comment)
-    {
-      $comment->setDate(new \DateTime($comment->date()));
-    }
+//    foreach ($comments as $comment)
+//    {
+//      $comment->setDate(new \DateTime($comment->date()));
+//    }
     
     return $comments;
   }
 
   public function modify(Comment $comment)
   {
-    $q = $this->dao->prepare('UPDATE comments SET auteur = :auteur, contenu = :contenu WHERE id = :id');
+    $q = $this->dao->prepare('UPDATE comments SET auteur = :auteur, contenu = :contenu, responseTo = :responseTo, notifie = :notifie WHERE id = :id');
     
     $q->bindValue(':auteur', $comment->auteur());
     $q->bindValue(':contenu', $comment->contenu());
+    $q->bindValue(':responseTo', $comment->responseTo());
+    $q->bindValue(':notifie', $comment->notifie());
     $q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
     
     $q->execute();
@@ -93,7 +96,7 @@ class CommentsManagerPDO extends CommentsManager
   
   public function get($id)
   {
-    $q = $this->dao->prepare('SELECT id, news, auteur, contenu FROM comments WHERE id = :id');
+    $q = $this->dao->prepare('SELECT * FROM comments WHERE id = :id');
     $q->bindValue(':id', (int) $id, \PDO::PARAM_INT);
     $q->execute();
     

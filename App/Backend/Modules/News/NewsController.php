@@ -18,7 +18,7 @@ class NewsController extends BackController
 
         $listeArticles = $this->managers->getManagerOf('News')->getList();
 
-        $this->page = $this->twig->render('@admin/modules/articles-liste.twig', array('listeArticles' => $listeArticles));
+        $this->page = $this->twig->render('@admin/modules/articles-liste.twig', array('listeArticles' => $listeArticles, 'flash' => $this->app()->user()->getFlash()));
     }
 
     public function executeArticlePublier(HTTPRequest $request)
@@ -34,7 +34,7 @@ class NewsController extends BackController
             $this->app->user()->setFlash("L'article n'est maintenant plus publié");
         }
 
-        $this->app->httpResponse()->redirect('/admin/');
+        $this->app->httpResponse()->redirect('/admin/articles/liste');
     }
 
     public function executeArticlesModifier(HTTPRequest $request)
@@ -42,6 +42,13 @@ class NewsController extends BackController
         $form = GestionFormulaire::creationFormulaireModificationArticle();
 
         $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+
+        if (empty($news))
+        {
+            $this->app->httpResponse()->setPage($this->twig->render('module/error404.twig'));
+            $this->app->httpResponse()->redirect404();
+        }
+
         $form->setData($news);
 
         if ($form->posted() && !$form->check()) {
@@ -51,7 +58,7 @@ class NewsController extends BackController
             $this->managers->getManagerOf('News')->modify($article);
 
             $this->app->user()->setFlash("L'article a été modifié avec succès");
-            $this->app->httpResponse()->redirect('/admin/');
+            $this->app->httpResponse()->redirect('/admin/articles/liste');
 
         } else if ($form->posted() && $form->check()) {
             $errors = $form->check();
@@ -66,16 +73,15 @@ class NewsController extends BackController
         $form = GestionFormulaire::creationFormulaireAjoutArticle();
 
         $news = new News();
-        $form->setData($news);
 
         if ($form->posted() && !$form->check()) {
             $article = $form->getData($news);
-            $article->setAuteur("Jean Forteroche");
+            $article->setAuteur($this->app()->config()->get('auteur'));
 
             $this->managers->getManagerOf('News')->add($article);
 
             $this->app->user()->setFlash("L'article a été ajouté avec succès");
-            $this->app->httpResponse()->redirect('/admin/');
+            $this->app->httpResponse()->redirect('/admin/articles/liste');
 
         } else if ($form->posted() && $form->check()) {
             $errors = $form->check();
@@ -89,7 +95,7 @@ class NewsController extends BackController
     {
         $listeCommentaires = $this->managers->getManagerOf('Comments')->getAll();
 
-        $this->page = $this->twig->render('@admin/modules/commentaires-liste.twig', array('listeCommentaires' => $listeCommentaires));
+        $this->page = $this->twig->render('@admin/modules/commentaires-liste.twig', array('listeCommentaires' => $listeCommentaires, 'flash' => $this->app()->user()->getFlash()));
     }
 
     public function executeCommentairesModifier(HTTPRequest $request)
@@ -98,8 +104,13 @@ class NewsController extends BackController
 
         $commentaire = $this->managers->getManagerOf('Comments')->get($request->getData('id'));
 
+        if (empty($commentaire))
+        {
+            $this->app->httpResponse()->setPage($this->twig->render('module/error404.twig'));
+            $this->app->httpResponse()->redirect404();
+        }
+
         $form->setData($commentaire);
-        $form->setValue('news', 1);
 
         if ($form->posted() && !$form->check()) {
             $commentaire = $form->getData($commentaire);
@@ -107,7 +118,7 @@ class NewsController extends BackController
             $this->managers->getManagerOf('Comments')->modify($commentaire);
 
             $this->app->user()->setFlash("Le commenatire a été modifié avec succès");
-            $this->app->httpResponse()->redirect('/admin/');
+            $this->app->httpResponse()->redirect('/admin/commentaires/liste');
 
         } else if ($form->posted() && $form->check()) {
             $errors = $form->check();
@@ -127,16 +138,16 @@ class NewsController extends BackController
 
         $this->app->user()->setFlash("L'article a été supprimé avec succès");
 
-        $this->app->httpResponse()->redirect('/admin/');
+        $this->app->httpResponse()->redirect('/admin/articles/liste');
     }
 
-    public function executeDeleteComment(HTTPRequest $request)
+    public function executeCommentaireSupprimer(HTTPRequest $request)
     {
         $this->managers->getManagerOf('Comments')->delete($request->getData('id'));
 
         $this->app->user()->setFlash('Le commentaire a bien été supprimé !');
 
-        $this->app->httpResponse()->redirect('.');
+        $this->app->httpResponse()->redirect('/admin/commentaires/liste');
     }
 
     public function executeIndex(HTTPRequest $request)
@@ -150,78 +161,5 @@ class NewsController extends BackController
         $nbreNotifie = $managerComments->countNotifie();
 
         $this->page = $this->twig->render('@admin/modules/index.twig', array('nbreArticles' => $nbreArticles, 'nbreComments' => $nbreComments, 'nbreNotifie' => $nbreNotifie, 'flash' => $this->app()->user()->getFlash()));
-    }
-
-    public function executeInsert(HTTPRequest $request)
-    {
-        $this->processForm($request);
-
-        $this->page->addVar('title', 'Ajout d\'une news');
-    }
-
-    public function executeUpdate(HTTPRequest $request)
-    {
-        $this->processForm($request);
-
-        $this->page->addVar('title', 'Modification d\'une news');
-    }
-
-    public function executeUpdateComment(HTTPRequest $request)
-    {
-        $this->page->addVar('title', 'Modification d\'un commentaire');
-
-        if ($request->method() == 'POST') {
-            $comment = new Comment(['id' => $request->getData('id'), 'auteur' => $request->postData('auteur'), 'contenu' => $request->postData('contenu')]);
-        } else {
-            $comment = $this->managers->getManagerOf('Comments')->get($request->getData('id'));
-        }
-
-        $formBuilder = new CommentFormBuilder($comment);
-        $formBuilder->build();
-
-        $form = $formBuilder->form();
-
-        $formHandler = new FormHandler($form, $this->managers->getManagerOf('Comments'), $request);
-
-        if ($formHandler->process()) {
-            $this->app->user()->setFlash('Le commentaire a bien été modifié');
-
-            $this->app->httpResponse()->redirect('/admin/');
-        }
-
-        $this->page->addVar('form', $form->createView());
-    }
-
-    public function processForm(HTTPRequest $request)
-    {
-        if ($request->method() == 'POST') {
-            $news = new News(['auteur' => $request->postData('auteur'), 'titre' => $request->postData('titre'), 'contenu' => $request->postData('contenu')]);
-
-            if ($request->getExists('id')) {
-                $news->setId($request->getData('id'));
-            }
-        } else {
-            // L'identifiant de la news est transmis si on veut la modifier
-            if ($request->getExists('id')) {
-                $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
-            } else {
-                $news = new News;
-            }
-        }
-
-        $formBuilder = new NewsFormBuilder($news);
-        $formBuilder->build();
-
-        $form = $formBuilder->form();
-
-        $formHandler = new FormHandler($form, $this->managers->getManagerOf('News'), $request);
-
-        if ($formHandler->process()) {
-            $this->app->user()->setFlash($news->isNew() ? 'La news a bien été ajoutée !' : 'La news a bien été modifiée !');
-
-            $this->app->httpResponse()->redirect('/admin/');
-        }
-
-        $this->page->addVar('form', $form->createView());
     }
 }

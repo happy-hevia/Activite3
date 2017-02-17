@@ -1,3 +1,14 @@
 form{
     display: inline-block;
 }
+
+.dataTables_filter {
+    width: inherit;
+     float: inherit;
+    text-align: right;
+}
+
+.modal {
+    z-index: 10000;
+
+}

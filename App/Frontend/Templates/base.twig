@@ -22,22 +22,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!----webfonts---->
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css' >
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,300italic,400italic,600italic' rel='stylesheet' type='text/css' >
-    <!----//webfonts---->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script >
-    <!--end slider -->
-    <!--script-->
-    <script type="text/javascript" src="{{ link('front/js/move-top.js') }}" ></script >
-    <script type="text/javascript" src="{{ link('front/js/easing.js') }}" ></script >
-    <!--/script-->
-    <script type="text/javascript" >
-        jQuery(document).ready(function ($) {
-            $(".scroll").click(function (event) {
-                event.preventDefault();
-                $('html,body').animate({scrollTop: $(this.hash).offset().top}, 900);
-            });
-        });
-    </script >
-    <!---->
+    <link rel="icon" type="image/png"  href="{{ link('front/images/profil-fav.png') }}" />
+
 
 </head >
 <body >
@@ -46,7 +32,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="header" >
         <div class="container" >
             <div class="logo" >
-                <a href="/" > <img src="{{ link('front/images/logo2.png') }}" title="logo reading time" width="222" /></a >
+                <a href="/" >
+                    <img src="{{ link('front/images/logo2.png') }}" title="logo reading time" width="222" /></a >
             </div >
             <!---start-top-nav---->
             <div class="top-menu" >
@@ -61,12 +48,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </ul >
             </div >
             <div class="clearfix" ></div >
-            <script >
-                $("span.menu").click(function () {
-                    $(".top-menu ul").slideToggle("slow", function () {
-                    });
-                });
-            </script >
             <!---//End-top-nav---->
         </div >
     </div >
@@ -80,43 +61,73 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 {% block menuSecondaire %}
                     <li ><a href="
     /" >Le livre</a ></li >
-    <li ><a href="/histoire" >L'histoire</a ></li >
-    {% endblock %}
-    <div class="clearfix" ></div >
-    </ul >
-    </div >
-    </div >
-    </div >
-    <!---//End-banner---->
-
-    {% block content %}
-
-    {% endblock %}
-
-
-    <!---fotter/-->
-    <div class="copywrite" >
-        <div class="container" >
-            <p >Copyrights &copy; 2017 Reading Time : Tous droits réservés | Design de
-                <a href="http://w3layouts.com/" >W3layouts</a > - <a href="/admin" >Administration</a ></p >
+                    <li ><a href="/histoire" >L'histoire</a ></li >
+                {% endblock %}
+                <div class="clearfix" ></div >
+            </ul >
         </div >
     </div >
-    <!---->
-    <script type="text/javascript" >
-        $(document).ready(function () {
-            /*
-             var defaults = {
-             containerID: 'toTop', // fading element id
-             containerHoverID: 'toTopHover', // fading element hover id
-             scrollSpeed: 1200,
-             easingType: 'linear'
-             };
-             */
-            $().UItoTop({easingType: 'easeOutQuart'});
+</div >
+<!---//End-banner---->
+
+{% block content %}
+
+{% endblock %}
+
+
+<!---fotter/-->
+<div class="copywrite" >
+    <div class="container" >
+        <p >Copyrights &copy; 2017 Reading Time : Tous droits réservés | Design de
+            <a href="http://w3layouts.com/" >W3layouts</a > - <a href="/admin/" >Administration</a ></p >
+    </div >
+</div >
+
+<!----//webfonts---->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script >
+<!--end slider -->
+<!--script-->
+<script type="text/javascript" src="{{ link('front/js/move-top.js') }}" ></script >
+<script type="text/javascript" src="{{ link('front/js/easing.js') }}" ></script >
+<script type="text/javascript" src="{{ link('front/js/bootstrap.min.js') }}" ></script >
+<!--/script-->
+<script type="text/javascript" >
+    jQuery(document).ready(function ($) {
+        $(".scroll").click(function (event) {
+            event.preventDefault();
+            $('html,body').animate({scrollTop: $(this.hash).offset().top}, 900);
         });
-    </script >
-    <a href="#to-top" id="toTop" style="display: block;" > <span id="toTopHover" style="opacity: 1;" > </span ></a >
+    });
+</script >
+<!---->
+
+<!---->
+<script type="text/javascript" >
+    $(document).ready(function () {
+        /*
+         var defaults = {
+         containerID: 'toTop', // fading element id
+         containerHoverID: 'toTopHover', // fading element hover id
+         scrollSpeed: 1200,
+         easingType: 'linear'
+         };
+         */
+        $().UItoTop({easingType: 'easeOutQuart'});
+    });
+</script >
+
+<script >
+    $("span.menu").click(function () {
+        $(".top-menu ul").slideToggle("slow", function () {
+        });
+    });
+</script >
+
+{% block javascripts %}
+{% endblock %}
+
+<a href="#to-top" id="toTop" style="display: block;" > <span id="toTopHover" style="opacity: 1;" > </span ></a >
 
 
-    </body >
+</body >
 </html >

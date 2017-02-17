@@ -13,6 +13,9 @@
     <div class="right_col" role="main" >
         <div class="row" >
             <div class="col-md-12 col-sm-12 col-xs-12" >
+                {% if flash is defined and flash is not null %}
+                    <div class="alert alert-success">{{ flash }}</div>
+                {% endif %}
                 <div class="x_panel" >
                     <div class="x_title" >
                         <h2 >Liste des articles</h2 >
@@ -31,7 +34,7 @@
                             <tr >
                                 <th >ID</th >
                                 <th >Titre</th >
-                                <th >Date</th >
+                                <th >Date d'ajout</th >
                                 <th >Action</th >
                                 <th >Publié</th >
                             </tr >
@@ -42,11 +45,11 @@
                                 <tr role="row" class="{% if loop.inder % 2 == 1 %}odd{% else %}even{% endif %}" >
                                     <td tabindex="0" class="sorting_1" >{{ article.id }}</td >
                                     <td >{{ article.titre }}</td >
-                                    <td >{{ article.dateCreation|date('d/m/y à h:m') }}</td >
+                                    <td >{{ article.dateAjout|date('d/m/y à H:i:s') }}</td >
                                     <td >
                                         <a href="{{ link('admin/articles/modifier-' ~ article.id) }}" class="btn btn-sm btn-primary" >Modifier</a >
                                         <a href="{{ link('admin/articles/publier-' ~ article.id) }}" class="btn btn-sm btn-success" >{% if article.publicated == 0 %}Publier{% else %}Dépublier{% endif %}</a >
-                                        <button id="btn-supprimer" data-titre="{{ article.titre }}" data-href="{{ link('admin/articles/supprimer-' ~ article.id) }}" class="btn btn-sm btn-danger bouton-supprimer" >Supprimer</button >
+                                        <button data-titre="{{ article.titre }}" data-href="{{ link('admin/articles/supprimer-' ~ article.id) }}" class="btn btn-sm btn-danger bouton-supprimer" >Supprimer</button >
                                     </td >
                                     <td >
                                         <span class="fa {% if article.publicated == 0 %}fa-close red{% else %}fa-check green{% endif %}" ></span >

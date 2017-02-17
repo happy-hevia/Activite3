@@ -1,6 +1,8 @@
 <?php
 namespace App\Frontend\Modules\News;
 
+use App\Frontend\Services\GestionCommentaires;
+use App\Frontend\Services\GestionFormulaire;
 use \OCFram\HTTPRequest;
 use \Entity\Comment;
 use \FormBuilder\CommentFormBuilder;
@@ -49,54 +51,54 @@ class NewsController extends BackController
     
     if (empty($news))
     {
+      $this->app->httpResponse()->setPage($this->twig->render('module/error404.twig'));
       $this->app->httpResponse()->redirect404();
     }
 
-    $this->page = $this->twig->render('module/show.twig', array('news' => $news, "comments" => $this->managers->getmanagerOf('Comments')->getListOf($news->id())));
-    
-//    $this->page->addVar('title', $news->titre());
-//    $this->page->addvar('news', $news);
-//    $this->page->addvar('comments', $this->managers->getmanagerOf('Comments')->getListOf($news->id()));
+    $form = GestionFormulaire::creationFormulaireAjoutCommentaire();
+
+    $listeCommentaires = $this->managers->getmanagerof('Comments')->getlistof($news->id());
+
+    $listeCommentairestrie = GestionCommentaires::tricommentairesselonniveau($listeCommentaires);
+
+
+    $commentaire = new Comment();
+    if ($form->posted() && !$form->check()) {
+      $nouveauCommentaire = $form->getdata($commentaire);
+      $nouveauCommentaire->setnews($request->getdata('id'));
+      $this->managers->getmanagerof('Comments')->add($nouveauCommentaire);
+      $this->app->user()->setflash("le commenatire a été créé avec succès");
+
+      $nouveauCommentaire = new Comment();
+      $form->setData($nouveauCommentaire);
+
+      $this->page = $this->twig->render('module/show.twig', array('news' => $news, "comments" => $listeCommentairestrie, 'form' => $form, 'flash' => $this->app->user()->getFlash() ));
+
+    } else if ($form->posted() && $form->check()) {
+      $errors = $form->check();
+      $this->page = $this->twig->render('module/show.twig', array('form' => $form, 'errors' => $errors));
+    } else {
+      $this->page = $this->twig->render('module/show.twig', array('news' => $news, "comments" => $listeCommentairestrie, 'form' => $form));
+    }
+
   }
 
-  public function executeInsertComment(HTTPRequest $request)
-  {
-    // Si le formulaire a été envoyé.
-    if ($request->method() == 'POST')
-    {
-      $comment = new Comment([
-        'news' => $request->getData('news'),
-        'auteur' => $request->postData('auteur'),
-        'contenu' => $request->postData('contenu')
-      ]);
-    }
-    else
-    {
-      $comment = new Comment;
-    }
-
-    $formBuilder = new CommentFormBuilder($comment);
-    $formBuilder->build();
-
-    $form = $formBuilder->form();
-
-    $formHandler = new FormHandler($form, $this->managers->getManagerOf('Comments'), $request);
-
-    if ($formHandler->process())
-    {
-      $this->app->user()->setFlash('Le commentaire a bien été ajouté, merci !');
-      
-      $this->app->httpResponse()->redirect('news-'.$request->getData('news').'.html');
-    }
-
-    $this->page->addVar('comment', $comment);
-    $this->page->addVar('form', $form->createView());
-    $this->page->addVar('title', 'Ajout d\'un commentaire');
-  }
 
   public function executeAPropos(HTTPRequest $request)
   {
     $this->page = $this->twig->render('module/a-propos.twig');
+  }
+
+  public function executeNotifieCommentaire(HTTPRequest $request)
+  {
+    $manager = $this->managers->getManagerOf('Comments');
+    $commentaire = $manager->get($request->getData('commentaire'));
+    $commentaire->setNotifie(true);
+    $manager->modify($commentaire);
+
+    $this->app->user()->setFlash('Le commentaire a bien été notifié');
+    $this->app->httpResponse()->redirect('/');
+
   }
 
   public function executeHistoire(HTTPRequest $request)

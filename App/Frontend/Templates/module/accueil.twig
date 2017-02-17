@@ -23,7 +23,7 @@
                             <div class="content-grid" >
                                 <div class="content-grid-head" >
                                     <h3 >Billet du jour</h3 >
-                                    <h4 >{{ news.dateAjout|date("d/m/Y") }}, Postée par:
+                                    <h4 >{{ news.dateAjout|date("d/m/Y") }}, Posté par:
                                         <a >{{ news.auteur }}</a ></h4 >
                                     <div class="clearfix" ></div >
                                 </div >
@@ -39,7 +39,7 @@
                                     <h3 ><a href="/news-{{ news.id }}" >{{ news.titre }}</a ></h3 >
                                     <h4 >{{ news.dateAjout|date("d/m/Y") }}, Postée par:
                                         <a href="#" >{{ news.auteur }}</a ></h4 >
-                                    <p >{{ news.contenu }}</p >
+                                    <p >{{ news.contenu|raw }}</p >
                                     <a class="bttn" href="/news-{{ news.id }}" >Voir Plus</a >
                                 </div >
                             </div >

@@ -9,7 +9,7 @@
                 <div class="content-grid">
                     <div class="content-grid-head">
                         <h3>{{ news.titre }}</h3>
-                        <h4>{{ news.dateAjout|date('d/m/y') }}, Postée par: <a href="#">{{ news.auteur }}</a></h4>
+                        <h4>{{ news.dateAjout|date('d/m/Y à H:i:s') }}, Posté par: <a href="#">{{ news.auteur }}</a></h4>
                         <div class="clearfix"></div>
                     </div>
                     <div class="content-grid-single">
@@ -17,26 +17,36 @@
                             {{ news.contenu|raw }}
                         </div>
 
-                        <div class="content-form">
+                        <div class="content-form" id="formulaire" >
                             <h3>Laisser un commentaire</h3>
-                            <form>
-                                <input type="text" placeholder="Nom" required/>
-                                <textarea placeholder="Message"></textarea>
-                                <input type="submit" value="Valider"/>
-                            </form>
+                            <div id="emplacement-reponse"></div>
+                            {% if flash is defined and flash is not null %}
+                                <div class="alert alert-success">{{ flash }}</div>
+                            {% endif %}
+                            {{ form|raw }}
+                            {% if errors is defined and errors is not empty %}
+                                <div class="alert alert-danger" >
+                                    <ul>
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div >
+                            {% endif %}
                         </div>
 
                         <div class="comments">
                             <h3>Commentaires</h3>
 
                             {% for comment in comments %}
-                                <div class="comment-grid comment-grid-1">
+                                <div class="comment-grid comment-grid-{{ comment[1] + 2 }}">
                                     <img src="{{ link('front/images/pic.png') }}" alt="image_profil"/>
                                     <div class="comment-info">
-                                        <h4>{{ comment.auteur }}</h4>
-                                        <p>{{ comment.contenu }}</p>
-                                        <h5>{{ comment.date|date('d/m/y à h:m') }}</h5>
-                                        <a >Répondre</a>
+                                        <h4>{{ comment[0].auteur }}</h4>
+                                        <p>{% if comment[0].notifie == 1 %}Le contenu du commentaire a été masqué{% else %}{{ comment[0].contenu|raw }}{% endif %}</p>
+                                        <h5>{{ comment[0].date|date('d/m/y à H:i:s') }}</h5>
+                                        <a href="#formulaire" class="repondre" data-auteur="{{ comment[0].auteur }}" data-response-to="{{ comment[0].id }}">Répondre</a>
+                                        <a {% if comment[0].notifie != 1 %}href="{{ link("commentaire-"~comment[0].id~"/notifie") }}"{% endif %} class="notifie {% if comment[0].notifie == 1 %}notifie-actif{% endif %}" data-id="{{ comment[0].id }}">{% if comment[0].notifie == 1 %}Ce commentaire a été signalé{% else %}Signaler{% endif %}</a>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -51,5 +61,37 @@
     </div>
 </div>
 
+
+{% endblock %}
+
+{% block javascripts %}
+    <script >
+        $(function() {
+            $('a[href*="#"]:not([href="#"])').click(function() {
+                if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                    if (target.length) {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000);
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $('.repondre').click(function(){
+            $('#emplacement-reponse').html('<div class="alert alert-warning alert-dismissible fade in" id="alert__reponse" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>Répondre à <strong> ' + $(this).data('auteur') + '</strong> </div>');
+
+            $('#response-to').val($(this).data('response-to'));
+
+
+            $('#alert__reponse').alert();
+            $('#alert__reponse').on('closed.bs.alert', function () {
+                $('#response-to').val(null);
+            })
+        })
+    </script >
 
 {% endblock %}

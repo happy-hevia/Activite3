@@ -19,10 +19,12 @@
     {% block stylesheets %}
     {% endblock %}
 
-    <!--    Style perso -->
-    <link rel="stylesheet" href="{{ link('back/css/style.css') }}" >
     <!-- Custom Theme Style -->
     <link href="{{ link('back/css/custom.min.css') }}" rel="stylesheet">
+    <!--    Style perso -->
+    <link rel="stylesheet" href="{{ link('back/css/style.css') }}" >
+
+    <link rel="icon" type="image/png"  href="{{ link('front/images/profil-fav.png') }}" />
 </head>
 
 <body class="nav-md">
@@ -69,7 +71,9 @@
                     </div>
                     <div class="menu_section">
                         <ul class="nav side-menu">
-                            <li><a><i class="fa fa-power-off"></i> Se déconnecter </a>
+                            <li><a href="{{ link('admin/deconnexion') }}"><i class="fa fa-power-off"></i> Se déconnecter </a>
+                            </li>
+                            <li><a href="{{ link('') }}"><i class="fa fa-eye"></i> Retour au site </a>
                             </li>
                         </ul>
                     </div>
@@ -89,7 +93,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <a  class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ link('back/images/profil.jpg') }}" alt="">Jean Forteroche
                             </a>
                         </li>
@@ -129,10 +133,7 @@
 {% endblock %}
 
 {#<!-- Custom Theme Scripts -->#}
-<script src="{{ link('back/js//custom.min.js') }}"></script>
-
-
-
+<script src="{{ link('back/js/custom.min.js') }}"></script>
 
 </body>
 </html>

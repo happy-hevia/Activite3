@@ -71,11 +71,11 @@ class NewsManagerPDO extends NewsManager
 
     $listeNews = $requete->fetchAll();
 
-    foreach ($listeNews as $news)
-    {
-      $news->setDateAjout(new \DateTime($news->dateAjout()));
-      $news->setDateModif(new \DateTime($news->dateModif()));
-    }
+//    foreach ($listeNews as $news)
+//    {
+//      $news->setDateAjout(new \DateTime($news->dateAjout()));
+//      $news->setDateModif(new \DateTime($news->dateModif()));
+//    }
 
     $requete->closeCursor();
 

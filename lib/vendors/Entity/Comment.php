@@ -73,7 +73,7 @@ class Comment extends Entity
   /**
    * @return mixed
    */
-  public function getNotifie()
+  public function notifie()
   {
     return $this->notifie;
   }
@@ -89,7 +89,7 @@ class Comment extends Entity
   /**
    * @return mixed
    */
-  public function getResponseTo()
+  public function responseTo()
   {
     return $this->responseTo;
   }
