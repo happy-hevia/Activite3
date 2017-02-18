@@ -39,10 +39,10 @@ class NewsController extends BackController
 
 //    calcule le nombre total de page
     $totalArticle = $manager->countPublicated();
-    $nbrePage = round($totalArticle / $nombreNews);
+    $nbrePage = ceil($totalArticle / $nombreNews);
 
 
-    $this->page = $this->twig->render("module/accueil.twig", array("title" => 'Liste des ' . $nombreNews . ' dernières news', "listeNews" => $listeNews, "page" => $page, "nbrePage" => $nbrePage));
+    $this->page = $this->twig->render("module/accueil.twig", array("title" => 'Liste des ' . $nombreNews . ' dernières news', "listeNews" => $listeNews, "page" => $page, "nbrePage" => $nbrePage, 'flash' => $this->app()->user()->getFlash()));
   }
   
   public function executeShow(HTTPRequest $request)
@@ -69,16 +69,13 @@ class NewsController extends BackController
       $this->managers->getmanagerof('Comments')->add($nouveauCommentaire);
       $this->app->user()->setflash("le commenatire a été créé avec succès");
 
-      $nouveauCommentaire = new Comment();
-      $form->setData($nouveauCommentaire);
-
-      $this->page = $this->twig->render('module/show.twig', array('news' => $news, "comments" => $listeCommentairestrie, 'form' => $form, 'flash' => $this->app->user()->getFlash() ));
+      $this->app->httpResponse()->redirect('/news-' . $request->getdata('id'));
 
     } else if ($form->posted() && $form->check()) {
       $errors = $form->check();
-      $this->page = $this->twig->render('module/show.twig', array('form' => $form, 'errors' => $errors));
+      $this->page = $this->twig->render('module/show.twig', array('form' => $form, 'errors' => $errors, 'flash' => $this-$this->app()->user()->getFlash()));
     } else {
-      $this->page = $this->twig->render('module/show.twig', array('news' => $news, "comments" => $listeCommentairestrie, 'form' => $form));
+      $this->page = $this->twig->render('module/show.twig', array('news' => $news, "comments" => $listeCommentairestrie, 'form' => $form, 'flash' => $this->app()->user()->getFlash()));
     }
 
   }

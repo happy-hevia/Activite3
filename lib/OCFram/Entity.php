@@ -1,12 +1,11 @@
 <?php
 namespace OCFram;
 
-abstract class Entity implements \ArrayAccess
+abstract class Entity
 {
   use Hydrator;
 
-  protected $erreurs = [],
-            $id;
+  protected $id;
 
   public function __construct(array $donnees = [])
   {
@@ -21,11 +20,6 @@ abstract class Entity implements \ArrayAccess
     return empty($this->id);
   }
 
-  public function erreurs()
-  {
-    return $this->erreurs;
-  }
-
   public function id()
   {
     return $this->id;
@@ -36,31 +30,4 @@ abstract class Entity implements \ArrayAccess
     $this->id = (int) $id;
   }
 
-  public function offsetGet($var)
-  {
-    if (isset($this->$var) && is_callable([$this, $var]))
-    {
-      return $this->$var();
-    }
-  }
-
-  public function offsetSet($var, $value)
-  {
-    $method = 'set'.ucfirst($var);
-
-    if (isset($this->$var) && is_callable([$this, $method]))
-    {
-      $this->$method($value);
-    }
-  }
-
-  public function offsetExists($var)
-  {
-    return isset($this->$var) && is_callable([$this, $var]);
-  }
-
-  public function offsetUnset($var)
-  {
-    throw new \Exception('Impossible de supprimer une quelconque valeur');
-  }
 }

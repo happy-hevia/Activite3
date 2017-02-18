@@ -35,6 +35,8 @@
  * @author Kris Wallsmith <kris.wallsmith@gmail.com>
  * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
+namespace OCFram;
+
 class SplClassLoader
 {
   private $_fileExtension = '.php';

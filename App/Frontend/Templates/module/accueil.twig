@@ -17,6 +17,9 @@
         <div class="container" >
             <div class="content-grids" >
                 <div class="content-main" >
+                    {% if flash is defined and flash is not null %}
+                        <div class="alert alert-success">{{ flash }}</div>
+                    {% endif %}
 
                     {% for news in listeNews %}
                         {% if loop.first and page == 1 %}

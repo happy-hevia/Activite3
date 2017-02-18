@@ -15,34 +15,43 @@ use Gregwar\Formidable\Language\French;
  */
 class GestionCommentaires
 {
-    public static function triCommentairesSelonNiveau($listeCommentaires, $tableauTri = null, $niveau = 0, $index = 0)
+    public static function triCommentairesSelonNiveau(&$listeCommentaires, &$tableauTri = array(), $niveau = 0, $responseTo = 0)
     {
-//        Je crée le tableau pour ce niveau
-        $tableTriNouveau = array();
+
 
 //        Pour chacun des commentaires
-        for ($i = $index; $i < sizeof($listeCommentaires) ; $i++ ){
+        foreach ($listeCommentaires as $commentaire){
 
-//            J'ajoute l'élément au tableau
-            $tableTriNouveau[] = array($listeCommentaires[$i], $niveau);
+//          Si le commentaire commentaire n'est pas au premier niveau lors de du première appelle on passe
+            if ($niveau == 0 && $commentaire->responseTo() > 0){
+                continue;
+            }
 
-            $id = $listeCommentaires[$i]->id();
-            unset($listeCommentaires[$i]);
-            foreach ($listeCommentaires as $commentaire){
 
-                if ($id == $commentaire->responseTo()) {
-                    return self::triCommentairesSelonNiveau($listeCommentaires, $tableTriNouveau, $niveau + 1, $i);
+            //            Si c'est un commentaire de premier niveau ou si c'est un commentaire qui répond au commentaire que l'on cherche
+            if ( ( $responseTo === 0 && $niveau == 0 ) || ( $responseTo > 0 && ($responseTo == $commentaire->responseTo()) ) ){
+                //            Alors on ajoute
+                array_push($tableauTri, array($commentaire, $niveau));
+                $id = $commentaire->id();
+
+                //            Si l'élément a été ajouté alors On supprime l'élément pour s'assurer qu'il ne réapparaitra plus
+                unset($listeCommentaires[array_search($commentaire,$listeCommentaires)]);
+
+                //            On retourne les sous commentaires
+                if ($niveau < 2){
+                    $tableauTri = self::triCommentairesSelonNiveau($listeCommentaires, $tableauTri, ($niveau + 1), $id);
                 }
             }
 
+
+
+
+
         }
 
-//        Je retourne le tableau existant avec celui que je viens de créé
-        if( $tableauTri == null ){
-            return $tableTriNouveau;
-        }
+//        Je retourne le tableau
+            return $tableauTri;
 
-        return array_merge($tableauTri, $tableTriNouveau);
     }
 
 }

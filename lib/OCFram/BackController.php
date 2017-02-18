@@ -1,26 +1,49 @@
 <?php
 namespace OCFram;
 
+
+use OCFram\ApplicationComponent;
+use OCFram\Managers;
+use OCFram\PDOFactory;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+use Twig_SimpleFunction;
 
 abstract class BackController extends ApplicationComponent
 {
   protected $action = '';
   protected $module = '';
   protected $page = null;
-  protected $view = '';
   protected $managers = null;
+  protected $twig;
 
   public function __construct(Application $app, $module, $action)
   {
     parent::__construct($app);
 
-    $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
+    $config = $this->app()->config();
+    $dbHost = $config->get('db-host');
+    $dbName = $config->get('db-name');
+    $dbUser = $config->get('db-user');
+    $dbMdp = $config->get('db-mdp');
+
+    $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion($dbHost, $dbName, $dbUser, $dbMdp));
+
+
+    $loader = new Twig_Loader_Filesystem(__DIR__.'/../../App/Frontend/Templates');
+    $loader->addPath(__DIR__ . '/../../App/Backend/Templates', 'admin');
+    $this->twig = new Twig_Environment($loader, array(
+        'cache' => __DIR__.'/../../cache'
+    ));
+
+//    ajout d'un générateur de lien
+    $function = new Twig_SimpleFunction('link', function ($path) {
+      return 'http://'.$_SERVER['SERVER_NAME'] . '/' . $path;
+    });
+    $this->twig->addFunction($function);
 
     $this->setModule($module);
     $this->setAction($action);
-    $this->setView($action);
   }
 
   public function execute()
@@ -60,15 +83,4 @@ abstract class BackController extends ApplicationComponent
     $this->action = $action;
   }
 
-  public function setView($view)
-  {
-    if (!is_string($view) || empty($view))
-    {
-      throw new \InvalidArgumentException('La vue doit être une chaine de caractères valide');
-    }
-
-    $this->view = $view;
-
-    $this->page->setContentFile(__DIR__.'/../../App/'.$this->app->name().'/Modules/'.$this->module.'/Views/'.$this->view.'.php');
-  }
 }

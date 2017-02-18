@@ -1,4 +1,5 @@
 <?php
+use OCFram\SplClassLoader;
 const DEFAULT_APP = 'Frontend';
 
 // Si l'application n'est pas valide, on va charger l'application par défaut qui se chargera de générer une erreur 404
@@ -11,9 +12,6 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__.'/../lib/OCFram/SplClassLoader.php';
 
 
-// Appelle la classe réécrite si elle existe
-$surchargeLoader = new SplClassLoader('OCFram', __DIR__.'/../App');
-$surchargeLoader->register();
 
 // On va ensuite enregistrer les autoloads correspondant à chaque vendor (OCFram, App, Model, etc.)
 $OCFramLoader = new SplClassLoader('OCFram', __DIR__.'/../lib');
@@ -22,10 +20,10 @@ $OCFramLoader->register();
 $appLoader = new SplClassLoader('App', __DIR__.'/..');
 $appLoader->register();
 
-$modelLoader = new SplClassLoader('Model', __DIR__.'/../lib/vendors');
+$modelLoader = new SplClassLoader('Model', __DIR__.'/../App/Commun');
 $modelLoader->register();
 
-$entityLoader = new SplClassLoader('Entity', __DIR__.'/../lib/vendors');
+$entityLoader = new SplClassLoader('Entity', __DIR__.'/../App/Commun');
 $entityLoader->register();
 
 $formBuilderLoader = new SplClassLoader('FormBuilder', __DIR__.'/../lib/vendors');
